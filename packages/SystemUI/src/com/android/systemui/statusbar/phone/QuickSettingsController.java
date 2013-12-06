@@ -25,10 +25,12 @@ import static com.android.internal.util.cm.QSConstants.TILE_BRIGHTNESS;
 import static com.android.internal.util.cm.QSConstants.TILE_CAMERA;
 import static com.android.internal.util.cm.QSConstants.TILE_DELIMITER;
 import static com.android.internal.util.cm.QSConstants.TILE_EXPANDEDDESKTOP;
+import static com.android.internal.util.cm.QSConstants.TILE_LOCATION;
 import static com.android.internal.util.cm.QSConstants.TILE_GPS;
 import static com.android.internal.util.cm.QSConstants.TILE_LOCKSCREEN;
 import static com.android.internal.util.cm.QSConstants.TILE_LTE;
 import static com.android.internal.util.cm.QSConstants.TILE_MOBILEDATA;
+import static com.android.internal.util.cm.QSConstants.TILE_MUSIC;
 import static com.android.internal.util.cm.QSConstants.TILE_NETWORKADB;
 import static com.android.internal.util.cm.QSConstants.TILE_NETWORKMODE;
 import static com.android.internal.util.cm.QSConstants.TILE_NFC;
@@ -36,7 +38,6 @@ import static com.android.internal.util.cm.QSConstants.TILE_PROFILE;
 import static com.android.internal.util.cm.QSConstants.TILE_PERFORMANCE_PROFILE;
 import static com.android.internal.util.cm.QSConstants.TILE_QUIETHOURS;
 import static com.android.internal.util.cm.QSConstants.TILE_RINGER;
-import static com.android.internal.util.cm.QSConstants.TILE_SCREENTIMEOUT;
 import static com.android.internal.util.cm.QSConstants.TILE_SETTINGS;
 import static com.android.internal.util.cm.QSConstants.TILE_SLEEP;
 import static com.android.internal.util.cm.QSConstants.TILE_SYNC;
@@ -46,6 +47,7 @@ import static com.android.internal.util.cm.QSConstants.TILE_VOLUME;
 import static com.android.internal.util.cm.QSConstants.TILE_WIFI;
 import static com.android.internal.util.cm.QSConstants.TILE_WIFIAP;
 import static com.android.internal.util.cm.QSConstants.TILE_WIMAX;
+import static com.android.internal.util.cm.QSConstants.TILE_REBOOT;
 
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -76,9 +78,11 @@ import com.android.systemui.quicksettings.CameraTile;
 //import com.android.systemui.quicksettings.ExpandedDesktopTile;
 import com.android.systemui.quicksettings.GPSTile;
 import com.android.systemui.quicksettings.InputMethodTile;
+import com.android.systemui.quicksettings.LocationTile;
 import com.android.systemui.quicksettings.LteTile;
 import com.android.systemui.quicksettings.MobileNetworkTile;
 import com.android.systemui.quicksettings.MobileNetworkTypeTile;
+import com.android.systemui.quicksettings.MusicTile;
 import com.android.systemui.quicksettings.NetworkAdbTile;
 import com.android.systemui.quicksettings.NfcTile;
 import com.android.systemui.quicksettings.PerformanceProfileTile;
@@ -87,7 +91,6 @@ import com.android.systemui.quicksettings.ProfileTile;
 import com.android.systemui.quicksettings.QuickSettingsTile;
 import com.android.systemui.quicksettings.QuietHoursTile;
 import com.android.systemui.quicksettings.RingerModeTile;
-import com.android.systemui.quicksettings.ScreenTimeoutTile;
 import com.android.systemui.quicksettings.SleepScreenTile;
 import com.android.systemui.quicksettings.SyncTile;
 import com.android.systemui.quicksettings.ToggleLockscreenTile;
@@ -98,6 +101,7 @@ import com.android.systemui.quicksettings.VolumeTile;
 import com.android.systemui.quicksettings.WiFiDisplayTile;
 import com.android.systemui.quicksettings.WiFiTile;
 import com.android.systemui.quicksettings.WifiAPTile;
+import com.android.systemui.quicksettings.RebootTile;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -214,6 +218,8 @@ public class QuickSettingsController {
                 qs = new WiFiTile(mContext, this, mStatusBarService.mNetworkController);
             } else if (tile.equals(TILE_GPS)) {
                 qs = new GPSTile(mContext, this);
+            } else if (tile.equals(TILE_LOCATION)) {
+                qs = new LocationTile(mContext, this);
             } else if (tile.equals(TILE_BLUETOOTH) && bluetoothSupported) {
                 qs = new BluetoothTile(mContext, this, mStatusBarService.mBluetoothController);
             } else if (tile.equals(TILE_BRIGHTNESS)) {
@@ -226,8 +232,6 @@ public class QuickSettingsController {
                 qs = new SyncTile(mContext, this);
             } else if (tile.equals(TILE_WIFIAP) && mobileDataSupported) {
                 qs = new WifiAPTile(mContext, this);
-            } else if (tile.equals(TILE_SCREENTIMEOUT)) {
-                qs = new ScreenTimeoutTile(mContext, this);
             } else if (tile.equals(TILE_MOBILEDATA) && mobileDataSupported) {
                 qs = new MobileNetworkTile(mContext, this, mStatusBarService.mNetworkController);
             } else if (tile.equals(TILE_LOCKSCREEN)) {
@@ -240,6 +244,10 @@ public class QuickSettingsController {
                 qs = new AirplaneModeTile(mContext, this, mStatusBarService.mNetworkController);
             } else if (tile.equals(TILE_TORCH)) {
                 qs = new TorchTile(mContext, this, mHandler);
+            } else if (tile.equals(TILE_MUSIC)) {
+                qs = new MusicTile(mContext, this);
+            } else if (tile.equals(TILE_REBOOT)) {
+                qs = new RebootTile(mContext, this);
             } else if (tile.equals(TILE_SLEEP)) {
                 qs = new SleepScreenTile(mContext, this);
             } else if (tile.equals(TILE_PROFILE)) {
